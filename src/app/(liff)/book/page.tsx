@@ -184,17 +184,6 @@ function BookContent() {
                     color: "#dc2626",
                   },
                 }}
-                styles={{
-                  caption: { color: "#0369a1" },
-                  day_selected: {
-                    backgroundColor: "#0ea5e9",
-                    color: "white",
-                  },
-                  day_range_middle: {
-                    backgroundColor: "#e0f2fe",
-                    color: "#0369a1",
-                  },
-                }}
                 numberOfMonths={1}
                 showOutsideDays={false}
               />

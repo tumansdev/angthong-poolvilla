@@ -53,6 +53,7 @@
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
@@ -100,6 +101,7 @@
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
@@ -110,8 +112,38 @@
     opacity: 0;
     transform: translateY(20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+/* React Day Picker custom styles */
+.rdp {
+  --rdp-cell-size: 40px;
+  --rdp-accent-color: #0ea5e9;
+  --rdp-background-color: #e0f2fe;
+}
+
+.rdp-caption {
+  color: #0369a1;
+}
+
+.rdp-day_selected,
+.rdp-day_selected:focus-visible,
+.rdp-day_selected:hover {
+  background-color: #0ea5e9 !important;
+  color: white !important;
+}
+
+.rdp-day_range_middle {
+  background-color: #e0f2fe !important;
+  color: #0369a1 !important;
+}
+
+.rdp-day_range_start,
+.rdp-day_range_end {
+  background-color: #0ea5e9 !important;
+  color: white !important;
 }

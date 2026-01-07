@@ -1,6 +1,6 @@
 {
-  "/(dashboard)/bookings/page": "app/(dashboard)/bookings/page.js",
-  "/(dashboard)/dashboard/page": "app/(dashboard)/dashboard/page.js",
   "/(liff)/page": "app/(liff)/page.js",
-  "/(liff)/villa/[id]/page": "app/(liff)/villa/[id]/page.js"
+  "/(liff)/villa/[id]/page": "app/(liff)/villa/[id]/page.js",
+  "/(dashboard)/bookings/page": "app/(dashboard)/bookings/page.js",
+  "/(dashboard)/dashboard/page": "app/(dashboard)/dashboard/page.js"
 }

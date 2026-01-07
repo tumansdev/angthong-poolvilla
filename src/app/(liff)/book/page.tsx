@@ -1,10 +1,10 @@
 "use client";
 
-import { useState, useMemo, Suspense } from "react";
+import { useState, useMemo, Suspense, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { format, addDays, isSameDay } from "date-fns";
+import { format, addDays, isSameDay, parseISO } from "date-fns";
 import { th } from "date-fns/locale";
 import { DayPicker, DateRange } from "react-day-picker";
 import {
@@ -20,7 +20,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { villasData, getVillaById, blockedDatesByVilla } from "@/lib/mock-data";
+import { villasData, getVillaById } from "@/lib/mock-data";
 import { formatPrice, calculateNights, calculateTotalPrice } from "@/lib/utils";
 import "react-day-picker/dist/style.css";
 
@@ -32,9 +32,34 @@ function BookContent() {
   const [selectedVillaId, setSelectedVillaId] = useState(initialVillaId);
   const [dateRange, setDateRange] = useState<DateRange | undefined>();
   const [guests, setGuests] = useState(2);
+  const [blockedDates, setBlockedDates] = useState<Date[]>([]);
+  const [isLoadingDates, setIsLoadingDates] = useState(false);
 
   const villa = useMemo(() => getVillaById(selectedVillaId), [selectedVillaId]);
-  const blockedDates = blockedDatesByVilla[selectedVillaId] || [];
+
+  // Fetch blocked dates from API
+  useEffect(() => {
+    async function fetchBlockedDates() {
+      if (!selectedVillaId) return;
+      
+      setIsLoadingDates(true);
+      try {
+        const res = await fetch(`/api/villas/${selectedVillaId}/blocked-dates`);
+        if (res.ok) {
+          const dates: string[] = await res.json();
+          setBlockedDates(dates.map((d) => parseISO(d)));
+        } else {
+          setBlockedDates([]);
+        }
+      } catch (error) {
+        console.error("Failed to fetch blocked dates:", error);
+        setBlockedDates([]);
+      }
+      setIsLoadingDates(false);
+    }
+
+    fetchBlockedDates();
+  }, [selectedVillaId]);
 
   const today = new Date();
   const minDate = addDays(today, 1);

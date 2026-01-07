@@ -94,7 +94,7 @@ export const useBookingStore = create<BookingState>((set, get) => ({
         if (res.ok) {
           const data = await res.json();
           if (Array.isArray(data)) {
-            set({ isLoading: false });
+            set({ bookings: data, isLoading: false });
             return data;
           }
         }
@@ -102,12 +102,12 @@ export const useBookingStore = create<BookingState>((set, get) => ({
       // Fallback to mock data
       await new Promise((resolve) => setTimeout(resolve, 200));
       const userBookings = mockBookings.filter((b) => b.lineUserId === lineUserId);
-      set({ isLoading: false });
+      set({ bookings: userBookings, isLoading: false });
       return userBookings;
     } catch (error) {
       console.error("Fetch user bookings error:", error);
       const userBookings = mockBookings.filter((b) => b.lineUserId === lineUserId);
-      set({ isLoading: false });
+      set({ bookings: userBookings, isLoading: false });
       return userBookings;
     }
   },

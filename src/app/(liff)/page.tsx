@@ -12,6 +12,7 @@ import {
   ChevronRight,
   Star,
   Sparkles,
+  CalendarCheck,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -43,7 +44,7 @@ export default function LiffHomePage() {
       {/* Hero Section */}
       <motion.div
         variants={itemVariants}
-        className="relative h-48 overflow-hidden bg-gradient-to-br from-villa-600 to-villa-800"
+        className="relative h-56 overflow-hidden bg-gradient-to-br from-villa-600 to-villa-800"
       >
         <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1200')] bg-cover bg-center opacity-30" />
         <div className="relative z-10 flex h-full flex-col items-center justify-center px-4 text-center text-white">
@@ -64,6 +65,17 @@ export default function LiffHomePage() {
             <Sparkles className="h-4 w-4" />
             เลือกวิลล่าที่ใช่สำหรับคุณ
           </p>
+          {/* Quick Action Button */}
+          <Link href="/status">
+            <Button 
+              variant="outline" 
+              size="sm" 
+              className="mt-4 border-white/50 bg-white/10 text-white hover:bg-white/20"
+            >
+              <CalendarCheck className="mr-2 h-4 w-4" />
+              ดูการจองของฉัน
+            </Button>
+          </Link>
         </div>
       </motion.div>
 

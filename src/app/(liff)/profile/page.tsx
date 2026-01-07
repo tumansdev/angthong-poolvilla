@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import { User, LogIn, Calendar, ChevronRight, Settings } from "lucide-react";
+import { User, LogIn, Calendar, ChevronRight, Phone, HelpCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useLiff } from "@/providers/liff-provider";
@@ -62,7 +62,7 @@ export default function ProfilePage() {
                 )}
               </div>
               <h1 className="mt-3 text-xl font-bold">{profile.displayName}</h1>
-              <p className="text-sm text-white/80">LINE Connected</p>
+              <p className="text-sm text-white/80">เชื่อมต่อกับ LINE แล้ว</p>
             </>
           ) : (
             <>
@@ -114,33 +114,42 @@ export default function ProfilePage() {
                 </div>
               </Link>
               <div className="mx-6 border-t" />
-              <Link href="/">
+              <a href="tel:+66812345678">
                 <div className="flex items-center justify-between px-6 py-4 hover:bg-slate-50">
                   <div className="flex items-center gap-3">
-                    <Settings className="h-5 w-5 text-villa-500" />
-                    <span>ดูวิลล่าทั้งหมด</span>
+                    <Phone className="h-5 w-5 text-villa-500" />
+                    <span>ติดต่อเจ้าของ</span>
                   </div>
                   <ChevronRight className="h-5 w-5 text-muted-foreground" />
                 </div>
-              </Link>
+              </a>
+              <div className="mx-6 border-t" />
+              <div className="flex items-center justify-between px-6 py-4 hover:bg-slate-50">
+                <div className="flex items-center gap-3">
+                  <HelpCircle className="h-5 w-5 text-villa-500" />
+                  <span>ช่วยเหลือ</span>
+                </div>
+                <ChevronRight className="h-5 w-5 text-muted-foreground" />
+              </div>
             </CardContent>
           </Card>
         </motion.div>
 
-        {/* Info */}
-        {isLoggedIn && profile && (
-          <motion.div variants={itemVariants}>
-            <Card className="border-villa-200 bg-villa-50">
-              <CardContent className="p-4">
-                <p className="text-sm text-muted-foreground">
-                  <strong>LINE User ID:</strong>{" "}
-                  <code className="text-xs">{profile.userId}</code>
-                </p>
-              </CardContent>
-            </Card>
-          </motion.div>
-        )}
+        {/* Angthong Info */}
+        <motion.div variants={itemVariants}>
+          <Card className="border-villa-200 bg-villa-50">
+            <CardContent className="p-4 text-center">
+              <p className="text-sm text-muted-foreground">
+                🏠 Angthong Poolvilla
+              </p>
+              <p className="text-xs text-muted-foreground mt-1">
+                พูลวิลล่าหรูหรา จังหวัดอ่างทอง
+              </p>
+            </CardContent>
+          </Card>
+        </motion.div>
       </div>
     </motion.div>
   );
 }
+

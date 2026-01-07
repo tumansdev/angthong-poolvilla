@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Calendar, ArrowLeft, Home, Clock } from "lucide-react";
+import { Calendar, ArrowLeft, Clock, RefreshCcw, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -28,15 +28,28 @@ const itemVariants = {
 export default function StatusPage() {
   const { profile, isLoggedIn, isReady } = useLiff();
   const { bookings, fetchBookingsByLineUserId, isLoading } = useBookingStore();
+  const [isRefreshing, setIsRefreshing] = useState(false);
+
+  const loadBookings = async () => {
+    if (profile?.userId) {
+      await fetchBookingsByLineUserId(profile.userId);
+    }
+  };
 
   useEffect(() => {
     if (isReady && profile?.userId) {
-      fetchBookingsByLineUserId(profile.userId);
+      loadBookings();
     }
-  }, [isReady, profile, fetchBookingsByLineUserId]);
+  }, [isReady, profile]);
+
+  const handleRefresh = async () => {
+    setIsRefreshing(true);
+    await loadBookings();
+    setIsRefreshing(false);
+  };
 
   // For demo, show mock user bookings
-  const userBookings = bookings.length > 0 ? bookings.slice(0, 3) : [];
+  const userBookings = bookings.length > 0 ? bookings.slice(0, 10) : [];
 
   return (
     <motion.div
@@ -46,13 +59,28 @@ export default function StatusPage() {
     >
       {/* Header */}
       <div className="sticky top-0 z-10 border-b bg-white/95 px-4 py-3 backdrop-blur-sm">
-        <div className="flex items-center gap-3">
-          <Link href="/">
-            <Button variant="ghost" size="icon" className="rounded-full">
-              <ArrowLeft className="h-5 w-5" />
-            </Button>
-          </Link>
-          <h1 className="text-lg font-semibold">สถานะการจอง</h1>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <Link href="/">
+              <Button variant="ghost" size="icon" className="rounded-full">
+                <ArrowLeft className="h-5 w-5" />
+              </Button>
+            </Link>
+            <h1 className="text-lg font-semibold">สถานะการจอง</h1>
+          </div>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="rounded-full"
+            onClick={handleRefresh}
+            disabled={isRefreshing || isLoading}
+          >
+            {isRefreshing ? (
+              <Loader2 className="h-5 w-5 animate-spin" />
+            ) : (
+              <RefreshCcw className="h-5 w-5" />
+            )}
+          </Button>
         </div>
       </div>
 

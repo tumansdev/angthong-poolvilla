@@ -85,6 +85,147 @@ export async function sendMessage(text: string): Promise<boolean> {
   }
 }
 
+// Send booking notification to OA (this appears in the chat)
+export async function sendBookingNotification(
+  bookingId: string,
+  villaName: string,
+  guestName: string,
+  guestPhone: string,
+  checkIn: string,
+  checkOut: string,
+  nights: number,
+  guests: number,
+  totalPrice: string
+): Promise<boolean> {
+  if (!isInLiff()) {
+    console.warn("Not in LIFF, cannot send booking notification");
+    return false;
+  }
+
+  try {
+    await liff.sendMessages([
+      {
+        type: "flex",
+        altText: `📌 การจองใหม่: ${villaName} - ${guestName}`,
+        contents: {
+          type: "bubble",
+          size: "mega",
+          header: {
+            type: "box",
+            layout: "vertical",
+            backgroundColor: "#0EA5E9",
+            paddingAll: "15px",
+            contents: [
+              {
+                type: "text",
+                text: "📌 การจองใหม่",
+                color: "#FFFFFF",
+                weight: "bold",
+                size: "lg",
+              },
+              {
+                type: "text",
+                text: bookingId,
+                color: "#E0F2FE",
+                size: "xs",
+                margin: "xs",
+              },
+            ],
+          },
+          body: {
+            type: "box",
+            layout: "vertical",
+            spacing: "md",
+            paddingAll: "15px",
+            contents: [
+              {
+                type: "box",
+                layout: "horizontal",
+                contents: [
+                  { type: "text", text: "🏠 วิลล่า", size: "sm", color: "#666666", flex: 3 },
+                  { type: "text", text: villaName, size: "sm", weight: "bold", flex: 5, wrap: true },
+                ],
+              },
+              {
+                type: "box",
+                layout: "horizontal",
+                contents: [
+                  { type: "text", text: "👤 ชื่อ", size: "sm", color: "#666666", flex: 3 },
+                  { type: "text", text: guestName, size: "sm", weight: "bold", flex: 5, wrap: true },
+                ],
+              },
+              {
+                type: "box",
+                layout: "horizontal",
+                contents: [
+                  { type: "text", text: "📞 เบอร์", size: "sm", color: "#666666", flex: 3 },
+                  { type: "text", text: guestPhone, size: "sm", weight: "bold", flex: 5 },
+                ],
+              },
+              { type: "separator", margin: "md" },
+              {
+                type: "box",
+                layout: "horizontal",
+                margin: "md",
+                contents: [
+                  { type: "text", text: "📅 เช็คอิน", size: "sm", color: "#666666", flex: 3 },
+                  { type: "text", text: checkIn, size: "sm", flex: 5 },
+                ],
+              },
+              {
+                type: "box",
+                layout: "horizontal",
+                contents: [
+                  { type: "text", text: "📅 เช็คเอาท์", size: "sm", color: "#666666", flex: 3 },
+                  { type: "text", text: checkOut, size: "sm", flex: 5 },
+                ],
+              },
+              {
+                type: "box",
+                layout: "horizontal",
+                contents: [
+                  { type: "text", text: "🌙 จำนวน", size: "sm", color: "#666666", flex: 3 },
+                  { type: "text", text: `${nights} คืน / ${guests} ท่าน`, size: "sm", flex: 5 },
+                ],
+              },
+              { type: "separator", margin: "md" },
+              {
+                type: "box",
+                layout: "horizontal",
+                margin: "md",
+                contents: [
+                  { type: "text", text: "💰 ราคารวม", size: "md", color: "#0EA5E9", weight: "bold", flex: 3 },
+                  { type: "text", text: totalPrice, size: "md", color: "#0EA5E9", weight: "bold", flex: 5, align: "end" },
+                ],
+              },
+            ],
+          },
+          footer: {
+            type: "box",
+            layout: "vertical",
+            backgroundColor: "#FEF9C3",
+            paddingAll: "10px",
+            contents: [
+              {
+                type: "text",
+                text: "⏳ รอการยืนยันจากเจ้าของ",
+                size: "sm",
+                color: "#854D0E",
+                align: "center",
+                weight: "bold",
+              },
+            ],
+          },
+        },
+      },
+    ]);
+    return true;
+  } catch (error) {
+    console.error("Failed to send booking notification:", error);
+    return false;
+  }
+}
+
 export function closeLiff(): void {
   if (isInLiff()) {
     liff.closeWindow();

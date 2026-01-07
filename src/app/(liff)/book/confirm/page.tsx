@@ -18,6 +18,7 @@ import { useLiff } from "@/providers/liff-provider";
 import { useBookingStore } from "@/stores/booking-store";
 import { getVillaById } from "@/lib/mock-data";
 import { formatPrice, calculateNights, calculateTotalPrice } from "@/lib/utils";
+import { sendBookingNotification } from "@/lib/liff";
 
 const formSchema = z.object({
   guestName: z.string().min(2, "กรุณากรอกชื่อ-นามสกุล"),
@@ -83,6 +84,22 @@ function ConfirmContent() {
         profile?.userId || "demo-user",
         profile?.displayName || data.guestName,
         profile?.pictureUrl
+      );
+
+      // Send booking notification to OA via LIFF (free!)
+      const checkInStr = format(checkInDate, "d MMM yyyy", { locale: th });
+      const checkOutStr = format(checkOutDate, "d MMM yyyy", { locale: th });
+      
+      await sendBookingNotification(
+        booking.id,
+        villa.name,
+        data.guestName,
+        data.guestPhone,
+        checkInStr,
+        checkOutStr,
+        nights,
+        guests,
+        formatPrice(totalPrice)
       );
 
       router.push(`/book/success?id=${booking.id}`);

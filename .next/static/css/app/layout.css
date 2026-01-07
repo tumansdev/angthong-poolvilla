@@ -742,6 +742,9 @@ video {
 .inset-0 {
   inset: 0px;
 }
+.-inset-2 {
+  inset: -0.5rem;
+}
 .bottom-0 {
   bottom: 0px;
 }
@@ -808,6 +811,10 @@ video {
 .mx-auto {
   margin-left: auto;
   margin-right: auto;
+}
+.mx-6 {
+  margin-left: 1.5rem;
+  margin-right: 1.5rem;
 }
 .mb-1 {
   margin-bottom: 0.25rem;
@@ -1048,6 +1055,9 @@ video {
 .justify-between {
   justify-content: space-between;
 }
+.justify-around {
+  justify-content: space-around;
+}
 .gap-1 {
   gap: 0.25rem;
 }
@@ -1120,6 +1130,9 @@ video {
 .border {
   border-width: 1px;
 }
+.border-4 {
+  border-width: 4px;
+}
 .border-b {
   border-bottom-width: 1px;
 }
@@ -1149,6 +1162,12 @@ video {
 }
 .border-white\/50 {
   border-color: rgb(255 255 255 / 0.5);
+}
+.border-white\/30 {
+  border-color: rgb(255 255 255 / 0.3);
+}
+.border-t-transparent {
+  border-top-color: transparent;
 }
 .bg-amber-50 {
   --tw-bg-opacity: 1;
@@ -1264,6 +1283,9 @@ video {
 .bg-white\/10 {
   background-color: rgb(255 255 255 / 0.1);
 }
+.bg-white\/20 {
+  background-color: rgb(255 255 255 / 0.2);
+}
 .bg-\[url\(\'https\:\/\/images\.unsplash\.com\/photo-1566073771259-6a8506099945\?w\=1200\'\)\] {
   background-image: url('https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1200');
 }
@@ -1340,6 +1362,9 @@ video {
 .fill-gold-400 {
   fill: #facc15;
 }
+.fill-villa-100 {
+  fill: #e0f2fe;
+}
 .object-cover {
   -o-object-fit: cover;
      object-fit: cover;
@@ -1410,6 +1435,10 @@ video {
 .py-8 {
   padding-top: 2rem;
   padding-bottom: 2rem;
+}
+.px-6 {
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
 }
 .pb-1 {
   padding-bottom: 0.25rem;
@@ -1607,6 +1636,13 @@ video {
 .text-yellow-800 {
   --tw-text-opacity: 1;
   color: rgb(133 77 14 / var(--tw-text-opacity, 1));
+}
+.text-slate-500 {
+  --tw-text-opacity: 1;
+  color: rgb(100 116 139 / var(--tw-text-opacity, 1));
+}
+.text-white\/80 {
+  color: rgb(255 255 255 / 0.8);
 }
 .line-through {
   text-decoration-line: line-through;
@@ -1934,6 +1970,11 @@ video {
 .hover\:text-slate-900:hover {
   --tw-text-opacity: 1;
   color: rgb(15 23 42 / var(--tw-text-opacity, 1));
+}
+
+.hover\:text-villa-500:hover {
+  --tw-text-opacity: 1;
+  color: rgb(14 165 233 / var(--tw-text-opacity, 1));
 }
 
 .hover\:underline:hover {

@@ -169,20 +169,6 @@ export default function StatusPage() {
           </motion.div>
         )}
       </div>
-
-      {/* Fixed Bottom */}
-      <motion.div
-        initial={{ y: 100 }}
-        animate={{ y: 0 }}
-        className="fixed bottom-0 left-0 right-0 border-t bg-white/95 px-4 py-4 backdrop-blur-sm"
-      >
-        <Link href="/">
-          <Button variant="villa" size="lg" className="w-full gap-2">
-            <Home className="h-5 w-5" />
-            จองเพิ่ม
-          </Button>
-        </Link>
-      </motion.div>
     </motion.div>
   );
 }

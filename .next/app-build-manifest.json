@@ -27,11 +27,6 @@
       "static/css/app/(liff)/book/page.css",
       "static/chunks/app/(liff)/book/page.js"
     ],
-    "/(dashboard)/login/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/(dashboard)/login/page.js"
-    ],
     "/(dashboard)/layout": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",

@@ -91,16 +91,27 @@ function bookingToRow(booking: Booking): string[] {
 // ===== API Functions =====
 
 export async function getAllBookings(): Promise<Booking[]> {
-  const auth = getAuthClient();
-  const sheets = google.sheets({ version: "v4", auth });
+  try {
+    const auth = getAuthClient();
+    const sheets = google.sheets({ version: "v4", auth });
 
-  const response = await sheets.spreadsheets.values.get({
-    spreadsheetId: SPREADSHEET_ID,
-    range: `${BOOKINGS_SHEET}!A2:Q`, // Skip header row
-  });
+    const response = await sheets.spreadsheets.values.get({
+      spreadsheetId: SPREADSHEET_ID,
+      range: `${BOOKINGS_SHEET}!A2:Q`, // Skip header row
+    });
 
-  const rows = response.data.values || [];
-  return rows.map((row) => rowToBooking(row as string[]));
+    const rows = response.data.values || [];
+    return rows.map((row) => rowToBooking(row as string[]));
+  } catch (error: unknown) {
+    // Handle case where sheet doesn't exist or is empty
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    if (errorMessage.includes("Unable to parse range") || 
+        errorMessage.includes("notFound")) {
+      console.warn("Bookings sheet not found or empty, returning empty array");
+      return [];
+    }
+    throw error;
+  }
 }
 
 export async function getBookingById(id: string): Promise<Booking | null> {
@@ -120,9 +131,69 @@ export async function getBookingsByVillaId(villaId: string): Promise<Booking[]> 
   return bookings.filter((b) => b.villaId === villaId);
 }
 
+// Helper to ensure Bookings sheet exists with header row
+async function ensureBookingsSheetExists(): Promise<void> {
+  const auth = getAuthClient();
+  const sheets = google.sheets({ version: "v4", auth });
+
+  try {
+    // Try to get the sheet metadata
+    const spreadsheet = await sheets.spreadsheets.get({
+      spreadsheetId: SPREADSHEET_ID,
+    });
+
+    const sheetExists = spreadsheet.data.sheets?.some(
+      (s) => s.properties?.title === BOOKINGS_SHEET
+    );
+
+    if (!sheetExists) {
+      // Create the Bookings sheet
+      await sheets.spreadsheets.batchUpdate({
+        spreadsheetId: SPREADSHEET_ID,
+        requestBody: {
+          requests: [
+            {
+              addSheet: {
+                properties: {
+                  title: BOOKINGS_SHEET,
+                },
+              },
+            },
+          ],
+        },
+      });
+
+      // Add header row
+      const headerRow = [
+        "id", "villaId", "guestName", "guestPhone", "guestEmail",
+        "lineUserId", "lineDisplayName", "linePictureUrl",
+        "checkIn", "checkOut", "nights", "guests", "totalPrice",
+        "status", "notes", "createdAt", "updatedAt"
+      ];
+
+      await sheets.spreadsheets.values.update({
+        spreadsheetId: SPREADSHEET_ID,
+        range: `${BOOKINGS_SHEET}!A1:Q1`,
+        valueInputOption: "USER_ENTERED",
+        requestBody: {
+          values: [headerRow],
+        },
+      });
+
+      console.log("Created Bookings sheet with header row");
+    }
+  } catch (error) {
+    console.error("Error ensuring sheet exists:", error);
+    throw error;
+  }
+}
+
 export async function createBooking(booking: Booking): Promise<Booking> {
   const auth = getAuthClient();
   const sheets = google.sheets({ version: "v4", auth });
+
+  // Ensure the Bookings sheet exists before creating
+  await ensureBookingsSheetExists();
 
   const row = bookingToRow(booking);
 

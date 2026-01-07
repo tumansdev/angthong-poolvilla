@@ -8,7 +8,7 @@ export async function GET(
 ) {
   try {
     const blockedDates = await getBlockedDatesByVilla(params.id);
-    return NextResponse.json({ blockedDates });
+    return NextResponse.json(blockedDates);
   } catch (error) {
     console.error("Failed to fetch blocked dates:", error);
     return NextResponse.json(
